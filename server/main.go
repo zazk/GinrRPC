@@ -22,7 +22,7 @@ func main() {
 	proto.RegisterAddServiceServer(srv, &server{})
 	reflection.Register(srv)
 
-	fmt.Println("Serving App Before")
+	fmt.Println("Serving App on http://localhost:4040")
 	if e := srv.Serve(listener); e != nil {
 		fmt.Println("Error Serving App")
 		panic(e)
@@ -30,19 +30,19 @@ func main() {
 }
 
 func (s *server) Add(ctx context.Context, request *proto.Request) (*proto.Response, error) {
-	a, b := request.GetA(), request.GetB()
 
 	fmt.Println("RPC Add function was invoked")
-	result := a + b
+	result := &proto.Response{}
+	result.Result = request.A + request.B
 
-	return &proto.Response{Result: result}, nil
+	return result, nil
 }
 
 func (s *server) Multiply(ctx context.Context, request *proto.Request) (*proto.Response, error) {
-	a, b := request.GetA(), request.GetB()
 
-	fmt.Println("PRC Multiply function was invoked")
-	result := a * b
+	fmt.Println("RPC Multiply function was invoked")
+	result := &proto.Response{}
+	result.Result = request.A * request.B
 
-	return &proto.Response{Result: result}, nil
+	return result, nil
 }
